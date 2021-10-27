@@ -10,13 +10,13 @@ Django is backend web framework built to be scalable, and reliable. React, React
 2. Download Node and set up enviroment variables
 3. Open up the terminal and navigate your self to the directory the project is located.
 4. Run command
-''' bash
+``` bash
  pip install virtualenv
  python -m venv "Name of virtual enviroment"
  ./env/Script/activate
  pip install -r requirments.txt
  cd Snowdown
- python manage.py runserver'''
+ python manage.py runserver```
 
 ### Linux
 
