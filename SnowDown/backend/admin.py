@@ -3,6 +3,8 @@ from .models import User
 
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext as _
+from .models import Animal_Table, SubAnimal_Table, Animal_Characteristics_Table, Incident_Photos_Table, Incident_Table, Incident_Before_Photos_Table,\
+    Incident_After_Photos_Table, Group_Incident_Table, TokenIssued
 
 # Register your models here.
 class UserAdmin(BaseUserAdmin):
@@ -27,3 +29,12 @@ class UserAdmin(BaseUserAdmin):
     )
 
 admin.site.register(User, UserAdmin)
+admin.site.register(SubAnimal_Table)
+admin.site.register(Animal_Table)
+admin.site.register(Animal_Characteristics_Table)
+admin.site.register(Incident_Photos_Table)
+admin.site.register(TokenIssued)
+admin.site.register(Incident_Table)
+admin.site.register(Group_Incident_Table)
+admin.site.register(Incident_Before_Photos_Table)
+admin.site.register(Incident_After_Photos_Table)
