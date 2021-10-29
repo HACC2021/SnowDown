@@ -8,6 +8,12 @@ class Animal_Info(DjangoObjectType):
         model = Animal_Table
         fields = ("animal",)
         
+class query(graphene.ObjectType):
+    all_Animals = graphene.List(Animal_Info)
+    
+    def resolve_all_Animals(root, info):
+        return Animal_Table.objects.all()
+        
 class add_Animal(graphene.Mutation):
     new_Animal = graphene.Field(Animal_Info)
     

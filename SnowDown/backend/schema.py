@@ -2,39 +2,18 @@ import graphene
 from graphene_django import DjangoObjectType
 import graphql_jwt
 from django.conf import settings
-from . import Userschemas
-from . import Animalschemas
-from . import SubAnimalschemas
+from . import Userschemas, Animalschemas, SubAnimalschemas, AnimalCharacteristicsSchema, IncidentSchema
 from django.contrib.auth import get_user_model
 
 from graphql import GraphQLError
 from graphql_jwt.utils import get_payload
-from .models import Animal_Table, SubAnimal_Table, Animal_Characteristics_Table, Incident_Photos_Table, Incident_Table, Incident_Before_Photos_Table,\
+from .models import Incident_Photos_Table, Incident_Table, Incident_Before_Photos_Table,\
     Incident_After_Photos_Table, Group_Incident_Table, TokenIssued
 from graphql_jwt.decorators import login_required, superuser_required
 
 
-class Query(graphene.ObjectType):
-    all_Users = graphene.List(Userschemas.User_Info)
-    current_User = graphene.Field(Userschemas.User_Info)
-    all_Animals = graphene.List(Animalschemas.Animal_Info)
-    single_Animal = graphene.Field(Animalschemas.Animal_Info)
-    all_SubAnimals = graphene.List(SubAnimalschemas.SubAnimal_Info)
-    
-    @superuser_required
-    def resolve_all_Users(root, info):
-        print('yes')
-        return get_user_model().objects.all()
-    
-    @login_required
-    def resolve_current_User(root, info):
-        return get_user_model().objects.get(email=info.context.user.email)
-    
-    def resolve_all_Animals(root, info):
-        return Animal_Table.objects.all()
-    def resolve_all_SubAnimals(root, info):
-        return SubAnimal_Table.objects.all()
-    
+class Query(AnimalCharacteristicsSchema.query, Userschemas.query, SubAnimalschemas.query, Animalschemas.query, graphene.ObjectType):
+    pass
     
 class Mutation(graphene.ObjectType):
     token_auth = Userschemas.ObtainJSONWebToken.Field()
@@ -49,5 +28,11 @@ class Mutation(graphene.ObjectType):
     add_Animals = Animalschemas.add_Animal.Field()
     delete_Animals = Animalschemas.delete_Animal.Field()
     edit_Animals = Animalschemas.edit_Animal.Field()
+    add_SubAnimal = SubAnimalschemas.add_SubAnimal.Field()
+    edit_SubAnimal = SubAnimalschemas.edit_SubAnimal.Field()
+    delete_SubAnimal = SubAnimalschemas.delete_SubAnimal.Field()
+    add_tags = AnimalCharacteristicsSchema.Add_Characteristics.Field()
+    add_incident = IncidentSchema.Create_Incident.Field()
+    
     
 schema = graphene.Schema(query=Query, mutation=Mutation)

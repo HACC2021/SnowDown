@@ -62,14 +62,14 @@ class TokenIssued(models.Model):
         return self.token
 # Animal type
 class Animal_Table(models.Model):
-    animal = models.CharField(max_length=400)
+    animal = models.CharField(max_length=400, unique=True)
     
     def __str__(self):
         return self.animal
     
 # Animal Sub category
 class SubAnimal_Table(models.Model):
-    subAnimal = models.CharField(max_length=400)
+    subAnimal = models.CharField(max_length=400, unique=True)
     animal = models.ForeignKey(Animal_Table, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -77,7 +77,7 @@ class SubAnimal_Table(models.Model):
 
 # Animal Characteristics
 class Animal_Characteristics_Table(models.Model):
-    characteristicsTag = models.CharField(max_length=400)
+    characteristicsTag = models.CharField(max_length=400, unique=True)
 
 class Incident_Photos_Table(models.Model):
     photo = models.ImageField(upload_to='Report_Images/')
@@ -96,6 +96,7 @@ class Incident_Table(models.Model):
     description = models.TextField()
     photos = models.ManyToManyField(Incident_Photos_Table)
     characteristics = models.ManyToManyField(Animal_Characteristics_Table)
+    people = models.IntegerField()
     
 class Incident_Before_Photos_Table(models.Model):
     photo = models.ImageField(upload_to='Volunteer_Before_Images/')

@@ -21,6 +21,24 @@ class User_Info(DjangoObjectType):
         model = get_user_model()
         fields = ("id", "first_name", "Last_name", 'email', "Volunteer", "Picture", "is_active", "is_superuser")
         
+class query(graphene.ObjectType):
+    all_Users = graphene.List(User_Info)
+    certain_Users = graphene.Field(User_Info, email=graphene.String(required=True))
+    current_User = graphene.Field(User_Info)
+    
+    @superuser_required
+    def resolve_all_Users(root, info):
+        print('yes')
+        return get_user_model().objects.all()
+    
+    @superuser_required
+    def resolve_certain_Users(root, info, email):
+        return get_user_model().objects.get(email=email)
+    
+    @login_required
+    def resolve_current_User(root, info):
+        return get_user_model().objects.get(email=info.context.user.email)
+        
 # This class Creats Users. An email has to be sent out with a token
 # Once a token is used it no longer works due to it getting revoked from
 # the token database. It then checks if the token has expired if so then it
