@@ -32,7 +32,7 @@ class Mutation(graphene.ObjectType):
     edit_SubAnimal = SubAnimalschemas.edit_SubAnimal.Field()
     delete_SubAnimal = SubAnimalschemas.delete_SubAnimal.Field()
     add_tags = AnimalCharacteristicsSchema.Add_Characteristics.Field()
-    add_incident = IncidentSchema.Create_Incident.Field()
+    #add_incident = IncidentSchema.Create_Incident.Field()
     
     
 schema = graphene.Schema(query=Query, mutation=Mutation)

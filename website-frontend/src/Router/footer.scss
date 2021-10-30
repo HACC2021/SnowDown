@@ -1,0 +1,69 @@
+.logofooter{
+    margin-left: 10px;
+    margin-right: 10px;
+    color: black;
+}
+.Footer{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.field{
+    width: 100%;
+    position: relative;
+    border-bottom: 2px solid black;
+    margin: 2rem auto 2rem;
+}
+.field::after{
+    content:"";
+    position: relative;
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: skyblue;
+    transform: scaleX(0);
+    transform-origin: 0%;
+    transition: transform 500ms ease-in-out;
+    top: 2px;
+
+}
+.field:focus-within{
+    border-color: transparent;
+    transform: scale(1);
+}
+.field:focus-within .label,
+.input:not(:placeholder-shown) + .label{
+    transform: translateY(-2rem) scale(0.8);
+}
+.field:focus-within::after{
+    transform: scaleX(1);
+    transform: scale(0.8), translate(-5rem);
+}
+.label{
+    color:black;
+    font-size: 1.2rem;
+    z-index: 499;
+    position: absolute;
+    transform: translateY(0rem);
+    transition: transform 400ms;
+    left: 0px;
+}
+
+
+.input{
+    outline: none;
+    border: none;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 500;
+}
+.input:valid{
+    color:black;
+}
+.input:invalid{
+    color: orangered;
+}

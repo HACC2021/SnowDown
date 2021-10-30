@@ -3,8 +3,7 @@ import graphene
 from graphql import GraphQLError
 from graphql_jwt.decorators import login_required, superuser_required
 from .models import Animal_Characteristics_Table
-from django.db.models import Q
-from operator import or_
+
 
 class AnimalCharacteriscsSchema_Info(DjangoObjectType):
     class Meta:

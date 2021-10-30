@@ -78,9 +78,15 @@ class SubAnimal_Table(models.Model):
 # Animal Characteristics
 class Animal_Characteristics_Table(models.Model):
     characteristicsTag = models.CharField(max_length=400, unique=True)
+    
 
 class Incident_Photos_Table(models.Model):
     photo = models.ImageField(upload_to='Report_Images/')
+
+class ReportedAnimal(models.Model):
+    characteristics = models.ManyToManyField(Animal_Characteristics_Table)
+    animal = models.ForeignKey(SubAnimal_Table, on_delete=models.CASCADE)
+    ParentAndChildPair = models.BooleanField()
 
 # Holds the Incidents people have reported
 class Incident_Table(models.Model):
@@ -92,10 +98,10 @@ class Incident_Table(models.Model):
     lastName = models.CharField(max_length=100)
     phone = models.CharField(max_length=18)
     email = models.CharField(max_length=500)
-    animal = models.ForeignKey(SubAnimal_Table, on_delete=models.CASCADE)
+    amountOfAnimals = models.IntegerField()
+    animalsInIncident = models.ManyToManyField(ReportedAnimal)
     description = models.TextField()
     photos = models.ManyToManyField(Incident_Photos_Table)
-    characteristics = models.ManyToManyField(Animal_Characteristics_Table)
     people = models.IntegerField()
     
 class Incident_Before_Photos_Table(models.Model):
@@ -104,17 +110,34 @@ class Incident_Before_Photos_Table(models.Model):
 class Incident_After_Photos_Table(models.Model):
     photo = models.ImageField(upload_to='Volunteer_After_Images/')
     
-class Group_Incident_Table(models.Model):
-    incident = models.ManyToManyField(Incident_Table)
-    upLat = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
-    downLat = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
-    leftLng = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
-    rightLng = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
-    description = models.TextField()
-    procedureDone = models.TextField()
+class Volunteer_Report(models.Model):
+    departure = models.DateTimeField(blank=True)
+    departureInfo = models.TextField(blank=True)
+    ParentAndChildPair = models.BooleanField()
+    volunteer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     pictureBefore = models.ManyToManyField(Incident_Before_Photos_Table)
     pictureAfter = models.ManyToManyField(Incident_After_Photos_Table)
     timeArrived = models.DateTimeField()
     timeLeft = models.DateTimeField()
+    description = models.TextField()
+    humanInteraction = models.TextField()
+    animalReport = models.ManyToManyField(ReportedAnimal)
+    procedureDone = models.TextField()
+    bleachedToday = models.BooleanField(blank=True)
+    animal = models.ForeignKey(SubAnimal_Table, on_delete=models.CASCADE)
+    lat = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    lng = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    Temps = models.DecimalField(max_digits=8, decimal_places=2, db_index=True)
+
+    
+class Group_Incident_Table(models.Model):
+    incident = models.ManyToManyField(Incident_Table)
+    volunteerReport = models.ManyToManyField(Volunteer_Report)
+    upLat = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    downLat = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    leftLng = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    rightLng = models.DecimalField(max_digits=19, decimal_places=15, db_index=True)
+    amountOfAnimal = models.IntegerField()
+    description = models.TextField(blank=True)
     volunteerCheck = models.BooleanField(default=False)
     volunteer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
