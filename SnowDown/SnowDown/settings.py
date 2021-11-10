@@ -9,17 +9,35 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import io
 from pathlib import Path
 from datetime import timedelta
 import environ
 import os
+import google.auth
+from google.oauth2 import service_account
+from google.cloud import secretmanager as sm
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+try:
+    from .local import *
+except ImportError:
+    pass
+
+SETTINGS_NAME = "application_settings"
+
+_, project = google.auth.default()
+client = sm.SecretManagerServiceClient()
+name = f"projects/{project}/secrets/{SETTINGS_NAME}/versions/latest"
+payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+
 env = environ.Env()
-environ.Env.read_env()
+env.read_env(io.StringIO(payload))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,7 +48,17 @@ SECRET_KEY = env('SECURITY_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = ('https://snowdown-i4ivlahe5q-uw.a.run.app',)
+
+
+
+
+SETTINGS_NAME = "application_settings"
+
 
 
 # Application definition
@@ -42,8 +70,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     "graphene_django",
     'backend',
+    'Frontend',
 ]
 
 GRAPHQL_JWT = {
@@ -64,6 +94,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'SnowDown.urls'
@@ -73,7 +104,9 @@ AUTH_USER_MODEL = "backend.User"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'Frontend/build')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,12 +127,13 @@ WSGI_APPLICATION = 'SnowDown.wsgi.application'
 
 DATABASES = {
         'default': {
-            'ENGINE': env('ENGINE'),
+            "ENGINE": 'django.db.backends.postgresql',
+            'INSTANCE': env('INSTANCE'),
             'NAME': env('NAME'),
-            'ENFORCE_SCHEMA': env('ENFORCE_SCHEMA'),
-            'CLIENT': {
-                'host': env('HOST'),
-            }  
+            'USER': env('USER'),
+            'PASSWORD': env('PASSWORD'),
+            'HOST': '172.29.96.3',
+            'PORT': '5432',
         }
 }
 
@@ -150,9 +184,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/Static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "Frontend/build/static"
+]
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'hacc-storage'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, 'SnowDown/hacc-330001-3db0e10cc7e8.json')
+)
+GS_DEFAULT_ACL = "authenticatedRead"
