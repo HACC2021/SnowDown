@@ -1,8 +1,8 @@
 # SnowDown
 ## Description
-This project is composed of django, react, bootstrap, djongo (mongodb), and django-graphene. To get access to any of the api keys or passwords please get into contact with **email: kobekuyeda@gmail.com**.
+This project is composed of django, react, bootstrap, PostgreSQL, and django-graphene. To get access to any of the api keys or passwords please get into contact with **email: kobekuyeda@gmail.com**.
 
-Django is backend web framework built to be scalable, and reliable. React, React Native are libraries built to make good, and reliable websites with javascript. django-graphene is a add on to django, allowing us to create a graphql api. The database used is mongodb, chosen for scalability and its fast reads.
+Django is backend web framework built to be scalable, and reliable. React, React Native are libraries built to make good, and reliable websites with javascript. django-graphene is a add on to django, allowing us to create a graphql api. The database used is PostgreSQL, chosen for connecting with different relationships.
 
 ## Starting up the Project
 ### Windows
