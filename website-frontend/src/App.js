@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import Basetemplate from './Router/BaseRoute'
+import Basetemplate from './Router/BaseRoute';
+import Usertemplate from './Router/UserRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -13,7 +14,10 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route to=''>
+          <Route path='/User'>
+            <Usertemplate/>
+          </Route>
+          <Route path='/'>
             <Basetemplate/>
           </Route>
         </Switch>

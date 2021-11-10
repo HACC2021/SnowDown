@@ -7,7 +7,7 @@ from .models import SubAnimal_Table, Animal_Table
 class SubAnimal_Info(DjangoObjectType):
     class Meta:
         model = SubAnimal_Table
-        fields = ("subAnimal", "animal",)
+        fields = ("subAnimal", "animal", "acronym",)
         
 class query(graphene.ObjectType):
     all_SubAnimals = graphene.List(SubAnimal_Info)

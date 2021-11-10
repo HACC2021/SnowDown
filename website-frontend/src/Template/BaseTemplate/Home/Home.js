@@ -60,7 +60,20 @@ const Home = () => {
                     </Accordion>
                 </Container>
             </div>
-
+            <div className="Footer">
+                <Container>
+                    <Row>
+                        <Col>
+                        <p>© 2020 Hawaii Marine Animal Response All rights reserved</p>
+                        </Col>
+                        <Col>
+                            <a href="https://www.facebook.com/HawaiiMarineAnimalResponse/"><i className="logofooter fab fa-facebook-f fa-lg"></i></a>
+                            <a href="https://www.instagram.com/hawaiimarineanimalresponse/"><i class="logofooter fab fa-instagram fa-lg"></i></a>
+                            <a href="https://twitter.com/HIMarineAnimal"><i className="logofooter fab fa-twitter fa-lg"></i></a>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         </div>
     )
 }

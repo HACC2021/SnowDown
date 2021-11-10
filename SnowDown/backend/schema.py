@@ -2,17 +2,17 @@ import graphene
 from graphene_django import DjangoObjectType
 import graphql_jwt
 from django.conf import settings
-from . import Userschemas, Animalschemas, SubAnimalschemas, AnimalCharacteristicsSchema, IncidentSchema
+from . import Userschemas, Animalschemas, SubAnimalschemas, IncidentSchema, FormSchema, ReportSchema
 from django.contrib.auth import get_user_model
 
 from graphql import GraphQLError
 from graphql_jwt.utils import get_payload
-from .models import Incident_Photos_Table, Incident_Table, Incident_Before_Photos_Table,\
-    Incident_After_Photos_Table, Group_Incident_Table, TokenIssued
+from .models import Incident_Photos_Table, Incident_Table,\
+    Group_Incident_Table, TokenIssued
 from graphql_jwt.decorators import login_required, superuser_required
 
 
-class Query(AnimalCharacteristicsSchema.query, Userschemas.query, SubAnimalschemas.query, Animalschemas.query, graphene.ObjectType):
+class Query(Userschemas.query, SubAnimalschemas.query, Animalschemas.query, FormSchema.query, ReportSchema.query, graphene.ObjectType):
     pass
     
 class Mutation(graphene.ObjectType):
@@ -31,8 +31,7 @@ class Mutation(graphene.ObjectType):
     add_SubAnimal = SubAnimalschemas.add_SubAnimal.Field()
     edit_SubAnimal = SubAnimalschemas.edit_SubAnimal.Field()
     delete_SubAnimal = SubAnimalschemas.delete_SubAnimal.Field()
-    add_tags = AnimalCharacteristicsSchema.Add_Characteristics.Field()
-    #add_incident = IncidentSchema.Create_Incident.Field()
+    add_Incident = IncidentSchema.add_Incident.Field()
     
     
 schema = graphene.Schema(query=Query, mutation=Mutation)

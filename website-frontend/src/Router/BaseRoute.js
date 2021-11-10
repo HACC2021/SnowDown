@@ -1,19 +1,53 @@
-import {Navbar, Nav, Container, Button, Modal, Col, Row} from 'react-bootstrap';
+import {Navbar, Nav, Container, Button, Modal, Alert} from 'react-bootstrap';
 import React, {useState} from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
     Switch,
     Route,
+    useHistory
 } from "react-router-dom";
+import axios from "axios";
 import './footer.scss';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/brands';
 import Home from '../Template/BaseTemplate/Home/Home';
+import FileReport from '../Template/BaseTemplate/Reports/Report';
 
 
 const Basetemplate = () => {
-    const[loginShow, setLoginShow] = useState(false)
+    const[loginShow, setLoginShow] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const history = useHistory()
+    const [loginError, setLoginError] = useState(false)
+
+    const Login = () => {
+        console.log('yes')
+        axios({
+            url:'/api/',
+            method: 'post',
+            data: {
+                query: `
+                    mutation tokenAuth {
+                        tokenAuth(email: ${JSON.stringify(email)}, password: ${JSON.stringify(password)}) {
+                        user {
+                            firstName
+                        }
+                        }
+                    }
+                `
+            }
+        }).then((results)=> {
+            if(results.data.errors){
+                setLoginError(true)
+            }
+            else{
+                history.push('/User?pagination=1')
+            }
+            
+        })
+    }
 
     const Close = () => setLoginShow(false)
     const Show = () => {
@@ -28,13 +62,14 @@ const Basetemplate = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <div class="field">
-                            <input type="email" name="email" class="input" placeholder=""/>
-                            <label for="email" class="label">Email</label>
+                        {loginError && <Alert variant={'danger'}>Your password or username is wrong please try again</Alert>}
+                        <div className="field">
+                            <input type="email" value={email} onChange={(x) => setEmail(x.target.value)} name="email" className="input" placeholder=""/>
+                            <label for="email" className="label">Email</label>
                         </div>
-                        <div class="field">
-                            <input type="password" class="input" placeholder=""/>
-                            <label for="password" class="label">Password</label>
+                        <div className="field">
+                            <input type="password" value={password} onChange={(x) => setPassword(x.target.value)} className="input" placeholder=""/>
+                            <label for="password" className="label">Password</label>
                         </div>
                     </div>
                     <div>
@@ -42,7 +77,7 @@ const Basetemplate = () => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary">Login</Button>
+                    <Button variant="primary" onClick={()=>Login()}>Login</Button>
                 </Modal.Footer>
             </Modal>
             <Navbar fixed="top" bg="light" expand="lg">
@@ -62,27 +97,16 @@ const Basetemplate = () => {
                 </Container>
             </Navbar>
             <Switch>
-                <Route to='/' exact={true}>
+                <Route path='/' exact={true}>
                     <Home/>
                 </Route>
-                <Route to="/ReportInfo" exact={true}>
-
+                <Route path="/ReportInfo" exact={true}>
+                    <FileReport/>
+                </Route>
+                <Route path="*">
+                    <h1 className="mt-6">404 Error: Page does not exist</h1>
                 </Route>
             </Switch>
-            <div className="Footer">
-                <Container>
-                    <Row>
-                        <Col>
-                        <p>© 2020 Hawaii Marine Animal Response All rights reserved</p>
-                        </Col>
-                        <Col>
-                            <a href="https://www.facebook.com/HawaiiMarineAnimalResponse/"><i aria-hidden="true" className="logofooter fab fa-facebook-f fa-lg"/></a>
-                            <a href="https://www.instagram.com/hawaiimarineanimalresponse/"><i class="logofooter fab fa-instagram fa-lg"></i></a>
-                            <a href="https://twitter.com/HIMarineAnimal"><i class="logofooter fab fa-twitter fa-lg"></i></a>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
         </div>
     )
 }

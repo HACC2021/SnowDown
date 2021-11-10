@@ -1,0 +1,153 @@
+.mt-6{
+    margin-top: 9rem;
+}
+.PhoneInputInput{
+    outline: none;
+    border: none;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 500;
+}
+.TextBoxInput{
+    outline: none;
+    border: none;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 500;
+}
+.TextBoxInput:valid{
+    color:black;
+}
+.TextBoxInput:invalid{
+    color: orangered;
+}
+.field-text{
+    width: 100%;
+    position: relative;
+    border-bottom: 2px solid black;
+    margin: 2rem auto 2rem;
+}
+.field-text::after{
+    content:"";
+    position: relative;
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: skyblue;
+    transform: scaleX(0);
+    transform-origin: 0%;
+    transition: transform 500ms ease-in-out;
+    top: 2px;
+
+}
+.field-text:focus-within{
+    border-color: transparent;
+    transform: scale(1);
+}
+.field-text:focus-within .label,
+.input:not(:placeholder-shown) + .label{
+    transform: translateY(-2rem) scale(0.8);
+}
+.field-text:focus-within::after{
+    transform: scaleX(1);
+    transform: scale(0.8), translate(-5rem);
+}
+.PhoneInputInput:valid{
+    color:black;
+}
+.PhoneInputInput:invalid{
+    color: orangered;
+}
+.react-tagsinput-input{
+    outline: none;
+    border: none;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 500;
+    
+}
+.react-tagsinput-input:valid{
+    color:black;
+}
+.react-tagsinput-input:invalid{
+    color: orangered;
+}
+
+.phonelabel{
+    color:black;
+    font-size: 1.2rem;
+    z-index: 499;
+    position: absolute;
+    transform: translateY(-2rem) translateX(3rem);
+    transition: transform 400ms;
+    left: 0px;
+}
+.field:focus-within .phonelabel{
+    transform: translateY(-4rem) scale(0.8);
+}
+.more-border{
+    border: 2px solid black;
+}
+.more-border:focus-within{
+    border: 2px solid black;
+}
+.mb-6{
+    margin-bottom: 9rem;
+}
+.label-char{
+    color:black;
+    font-size: 1.2rem;
+    z-index: 499;
+    position: absolute;
+    transform: translateY(0rem) translateX(1rem);
+    transition: transform 400ms;
+    left: 0px;
+}
+.react-tagsinput{
+    border:none;
+}
+.bringUp5{
+    z-index: 604!important;
+}
+.bringUp4{
+    z-index: 603!important;
+}
+.bringUp3{
+    z-index: 602!important;
+}
+.bringUp2{
+    z-index: 601!important;
+}
+.bringUp1{
+    z-index: 600!important;
+}
+.bringUp{
+    z-index: 599!important;
+}
+.bringUp-1{
+    z-index: 598!important;
+}
+.bringUp-2{
+    z-index: 597!important;
+}
+.bringUp-3{
+    z-index: 580!important;
+}
